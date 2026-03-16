@@ -73,8 +73,8 @@ export default async function DashboardPage() {
           <div className="font-mono text-[10px] text-neutral-600 uppercase tracking-wider mt-0.5">skills</div>
         </div>
         <div className="rounded border border-neutral-800/50 bg-neutral-900/20 p-4">
-          <div className="font-mono text-2xl font-bold text-neon-yellow">${userData?.totalDonationsReceived ?? "0"}</div>
-          <div className="font-mono text-[10px] text-neutral-600 uppercase tracking-wider mt-0.5">earned</div>
+          <div className="font-mono text-2xl font-bold text-neon-yellow">{donationStats[0]?.count ?? 0}</div>
+          <div className="font-mono text-[10px] text-neutral-600 uppercase tracking-wider mt-0.5">donations</div>
         </div>
         <div className="rounded border border-neutral-800/50 bg-neutral-900/20 p-4">
           <div className="font-mono text-2xl font-bold text-neon-magenta">{hasBscAddress ? "✓" : "—"}</div>
@@ -168,7 +168,7 @@ export default async function DashboardPage() {
                 donations received
               </p>
               <p className="font-mono text-[10px] text-neutral-600">
-                {donationStats[0]?.count ?? 0} donations · ${userData?.totalDonationsReceived ?? "0"} total
+                {donationStats[0]?.count ?? 0} donations received
               </p>
             </div>
           </div>
