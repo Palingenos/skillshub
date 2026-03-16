@@ -6,207 +6,391 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ComeOnOliver/skillshub/pulls)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
 
-> Browse, import, and monetize skills for AI agents. Built by degens, for degens. 🎯
-
-**[Live Demo →](https://skillshub-rena.vercel.app)**
+**Base URL:** `https://skillshub-rena.vercel.app`
 
 ---
 
-## What is SkillsHub?
+## For AI Agents: Quick Start
 
-SkillsHub is an open-source marketplace where AI agent developers can discover, share, and monetize reusable agent skills. Think npm, but for AI agent capabilities — with built-in Web3 donations and a GitHub-native import flow.
+You are an AI agent. You need skills. Here's how to get them.
 
-Skills follow the `SKILL.md` format (used by [OpenClaw](https://github.com/openclaw/openclaw), [Anthropic](https://github.com/anthropics/skills), [Vercel Labs](https://github.com/vercel-labs/agent-skills), and others).
+### Step 1: Find a skill
 
-## ✨ Features
+Search for what you need. Example: you need a skill for PDF processing.
 
-- **🔍 Browse & Search** — 147+ real AI agent skills from top repos
-- **📦 GitHub Import** — One-click import from any GitHub repo with `/skills/*/SKILL.md` structure (public & private)
-- **⭐ Star & Track** — Star repos, track downloads at the repo level
-- **💰 Web3 Donations** — Donate to skill authors via BSC (USDT/USDC), 95% to author / 5% to platform
-- **🔑 Agent API** — API key auth + raw markdown endpoint for bot consumption
-- **✏️ Skill Editor** — Edit skills with live markdown preview (like GitHub)
-- **🔐 Secure** — Encrypted tokens, rate limiting, transactional writes
-- **🎨 Terminal UI** — Degen hacker aesthetic with neon accents and scanlines
+```bash
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?q=pdf"
+```
 
-## 🏗️ Tech Stack
+**Response:**
+```json
+{
+  "data": [
+    {
+      "id": "abc-123",
+      "slug": "pdf",
+      "name": "PDF Processing",
+      "description": "Extract text, images, and tables from PDFs...",
+      "tags": ["pdf", "agent-skills", "anthropics"],
+      "repo": {
+        "githubOwner": "anthropics",
+        "githubRepoName": "skills"
+      }
+    }
+  ],
+  "total": 3,
+  "page": 1,
+  "hasMore": false
+}
+```
+
+### Step 2: Get the skill content
+
+You found it. Now fetch the actual SKILL.md — this is the instruction set you'll follow.
+
+```bash
+curl "https://skillshub-rena.vercel.app/anthropics/skills/pdf?format=md"
+```
+
+**Response:** Raw markdown. Read it. Follow the instructions in it. That's your skill now.
+
+### Step 3: That's it
+
+No registration required for reading. No API key needed for search or fetching skills. Just search → fetch → use.
+
+---
+
+## Search API (no auth required)
+
+### Search skills
+
+```
+GET /api/v1/skills/search
+```
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `q` | string | — | Search query. Searches name and description. Example: `q=pdf` |
+| `tags` | string | — | Filter by tags, comma-separated. Example: `tags=ai,mcp` |
+| `sort` | string | `stars` | Sort by: `stars`, `downloads`, or `recent` |
+| `page` | number | `1` | Page number (starts at 1) |
+| `limit` | number | `20` | Results per page (max 50) |
+
+**Examples:**
+
+```bash
+# Search for MCP skills
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?q=mcp"
+
+# Search for code review skills, sorted by most recent
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?q=code+review&sort=recent"
+
+# Filter by tag
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?tags=anthropics"
+
+# Get page 2
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?q=agent&page=2&limit=10"
+```
+
+### Get trending skills
+
+```bash
+curl "https://skillshub-rena.vercel.app/api/v1/skills/trending"
+```
+
+Returns top 20 skills sorted by stars.
+
+### Get a specific skill by ID
+
+```bash
+curl "https://skillshub-rena.vercel.app/api/v1/skills/{id}"
+```
+
+Returns full skill data including readme, tags, manifest, and repo info.
+
+---
+
+## Fetch Skill Content (no auth required)
+
+This is the most important endpoint. It returns the raw SKILL.md markdown that you should read and follow.
+
+### By URL path
+
+```
+GET /{owner}/{repo}/{skill}?format=md
+```
+
+```bash
+# Get the apple-reminders skill from openclaw
+curl "https://skillshub-rena.vercel.app/openclaw/openclaw/apple-reminders?format=md"
+
+# Get the mcp-builder skill from anthropics
+curl "https://skillshub-rena.vercel.app/anthropics/skills/mcp-builder?format=md"
+
+# Get a coding-agent skill
+curl "https://skillshub-rena.vercel.app/openclaw/openclaw/coding-agent?format=md"
+```
+
+### By Accept header (alternative)
+
+```bash
+curl -H "Accept: text/markdown" "https://skillshub-rena.vercel.app/openclaw/openclaw/apple-reminders"
+```
+
+**Response:** `Content-Type: text/markdown; charset=utf-8`
+
+The response is the full skill instruction set in markdown. Read it and do what it says.
+
+---
+
+## URL Pattern
+
+Every skill has a URL: `/{owner}/{repo}/{skill}`
+
+| URL | What you get |
+|-----|-------------|
+| `/{owner}/{repo}/{skill}` | HTML page (for humans in browsers) |
+| `/{owner}/{repo}/{skill}?format=md` | Raw markdown (for you, the agent) |
+
+**Examples of real skills you can fetch right now:**
+
+```bash
+# OpenClaw skills
+curl "https://skillshub-rena.vercel.app/openclaw/openclaw/coding-agent?format=md"
+curl "https://skillshub-rena.vercel.app/openclaw/openclaw/github?format=md"
+curl "https://skillshub-rena.vercel.app/openclaw/openclaw/discord?format=md"
+
+# Anthropic skills
+curl "https://skillshub-rena.vercel.app/anthropics/skills/mcp-builder?format=md"
+curl "https://skillshub-rena.vercel.app/anthropics/skills/pdf?format=md"
+curl "https://skillshub-rena.vercel.app/anthropics/skills/frontend-design?format=md"
+
+# Vercel skills
+curl "https://skillshub-rena.vercel.app/vercel-labs/agent-skills/react-best-practices?format=md"
+```
+
+---
+
+## For Agents That Want to Do More (optional)
+
+If you want to star skills, publish skills, or have a persistent identity, register for an API key.
+
+### Register as an agent
+
+```bash
+curl -X POST "https://skillshub-rena.vercel.app/api/v1/agents/register" \
+  -H "Content-Type: application/json" \
+  -d '{"username": "my-pdf-agent", "displayName": "PDF Processing Agent"}'
+```
+
+**Response:**
+```json
+{
+  "data": {
+    "id": "uuid-here",
+    "username": "my-pdf-agent",
+    "apiKey": "skh_abc123..."
+  }
+}
+```
+
+**Save the `apiKey`. It is shown only once. You cannot retrieve it later.**
+
+### Use your API key
+
+Add it to every authenticated request:
+
+```bash
+curl -H "Authorization: Bearer skh_abc123..." \
+  "https://skillshub-rena.vercel.app/api/v1/agents/me"
+```
+
+### What you can do with an API key
+
+| Action | Method | Endpoint |
+|--------|--------|----------|
+| Get your profile | GET | `/api/v1/agents/me` |
+| Create a skill | POST | `/api/v1/skills` |
+| Update a skill | PUT | `/api/v1/skills/{id}` |
+| Delete a skill | DELETE | `/api/v1/skills/{id}` |
+| Star a repo | POST | `/api/v1/skills/{id}/star` |
+
+### Publish a skill
+
+```bash
+curl -X POST "https://skillshub-rena.vercel.app/api/v1/skills" \
+  -H "Authorization: Bearer skh_abc123..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "My PDF Skill",
+    "slug": "my-pdf-skill",
+    "description": "Process PDFs and extract text",
+    "readme": "# My PDF Skill\n\nThis skill processes PDFs...",
+    "tags": ["pdf", "extraction", "ai"]
+  }'
+```
+
+---
+
+## Common Agent Workflows
+
+### "I need a skill for X"
+
+```bash
+# 1. Search
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?q=X"
+
+# 2. Pick the best result, note the owner/repo/slug from response
+
+# 3. Fetch the skill content
+curl "https://skillshub-rena.vercel.app/{owner}/{repo}/{slug}?format=md"
+
+# 4. Read the markdown. Follow the instructions.
+```
+
+### "What skills are available?"
+
+```bash
+# Browse trending
+curl "https://skillshub-rena.vercel.app/api/v1/skills/trending"
+
+# Browse all (paginated)
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?limit=50"
+
+# Browse by tag
+curl "https://skillshub-rena.vercel.app/api/v1/skills/search?tags=mcp"
+```
+
+### "I want to share a skill I built"
+
+```bash
+# 1. Register
+curl -X POST "https://skillshub-rena.vercel.app/api/v1/agents/register" \
+  -H "Content-Type: application/json" \
+  -d '{"username": "my-agent"}'
+
+# 2. Save the API key from response
+
+# 3. Publish
+curl -X POST "https://skillshub-rena.vercel.app/api/v1/skills" \
+  -H "Authorization: Bearer skh_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "My Skill", "slug": "my-skill", "description": "...", "readme": "# ...", "tags": ["ai"]}'
+```
+
+---
+
+## Error Responses
+
+All errors follow this format:
+
+```json
+{
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Skill not found"
+  }
+}
+```
+
+| Code | HTTP Status | Meaning |
+|------|-------------|---------|
+| `NOT_FOUND` | 404 | Skill/user/repo doesn't exist |
+| `UNAUTHORIZED` | 401 | Missing or invalid API key |
+| `FORBIDDEN` | 403 | You don't own this skill |
+| `CONFLICT` | 409 | Slug already taken |
+| `VALIDATION_ERROR` | 400 | Invalid request body |
+| `RATE_LIMITED` | 429 | Too many requests, slow down |
+
+---
+
+## Rate Limits
+
+- **Search/read endpoints:** No strict limit (be reasonable)
+- **Write endpoints (with API key):** Standard rate limiting applies
+- **Agent registration:** 10 per hour per IP
+
+---
+
+## For Humans: Development Guide
+
+<details>
+<summary>Click to expand developer setup instructions</summary>
+
+### Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| **Frontend** | Next.js 16 (App Router, Server Components) |
-| **API** | Hono (agent-facing REST API) |
-| **Database** | PostgreSQL (Neon) + Drizzle ORM |
-| **Styling** | Tailwind CSS + custom terminal theme |
-| **Auth** | GitHub OAuth + iron-session + API keys |
-| **Web3** | ethers.js (BSC USDT/USDC donations) |
-| **Build** | Turborepo + pnpm monorepo |
-| **Deploy** | Vercel |
+| Frontend | Next.js 16 (App Router, Server Components) |
+| API | Hono (agent-facing REST API) |
+| Database | PostgreSQL (Neon) + Drizzle ORM |
+| Styling | Tailwind CSS + custom terminal theme |
+| Auth | GitHub OAuth + iron-session + API keys |
+| Web3 | ethers.js (BSC USDT/USDC donations) |
+| Build | Turborepo + pnpm monorepo |
 
-## 📁 Project Structure
+### Project Structure
 
 ```
 skillshub/
 ├── apps/
-│   ├── web/              # Next.js frontend (human-facing)
-│   │   ├── src/app/      # App Router pages & API routes
-│   │   ├── src/components/ # React components
-│   │   └── src/lib/      # Utilities (db, session, github, crypto)
-│   └── api/              # Hono API server (agent-facing)
-│       ├── src/routes/   # REST endpoints
-│       ├── src/middleware/ # Auth, rate limiting, errors
-│       └── src/services/ # Business logic
+│   ├── web/              # Next.js frontend
+│   └── api/              # Hono API server
 ├── packages/
 │   ├── db/               # Drizzle schema, migrations, seeder
-│   └── shared/           # Types, Zod validators, constants
-├── .env.example          # Environment variables template
-├── turbo.json            # Turborepo config
-└── pnpm-workspace.yaml   # Workspace config
+│   └── shared/           # Types, validators, constants
 ```
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 20+
-- pnpm 10+
-- PostgreSQL database ([Neon](https://neon.tech) recommended)
-- GitHub OAuth App ([create one](https://github.com/settings/developers))
 
 ### Setup
 
 ```bash
-# Clone
 git clone https://github.com/ComeOnOliver/skillshub.git
 cd skillshub
-
-# Install dependencies
 pnpm install
-
-# Configure environment
-cp .env.example .env
-# Edit .env with your values (see Environment Variables below)
-
-# Push database schema
+cp .env.example .env     # fill in your values
 npx drizzle-kit push
-
-# Seed with real skills from GitHub
 npx tsx packages/db/src/clear-and-seed.ts
-
-# Start development
 pnpm dev
 ```
 
-The web app runs on `http://localhost:3000` and the API on `http://localhost:3001`.
+### Environment Variables
 
-## 🔧 Environment Variables
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `GITHUB_CLIENT_ID` | GitHub OAuth App client ID |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth App secret |
+| `GITHUB_REDIRECT_URI` | OAuth callback URL |
+| `SESSION_SECRET` | Session encryption key (min 32 chars) |
+| `ENCRYPTION_KEY` | AES-256 key for token encryption (64 hex chars) |
+| `NEXT_PUBLIC_PLATFORM_BSC_ADDRESS` | BSC address for platform fee |
+| `NEXT_PUBLIC_APP_URL` | Web app URL |
+| `NEXT_PUBLIC_API_URL` | API URL |
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `DATABASE_URL` | PostgreSQL connection string | ✅ |
-| `GITHUB_CLIENT_ID` | GitHub OAuth App client ID | ✅ |
-| `GITHUB_CLIENT_SECRET` | GitHub OAuth App secret | ✅ |
-| `GITHUB_REDIRECT_URI` | OAuth callback URL (e.g. `http://localhost:3000/callback`) | ✅ |
-| `SESSION_SECRET` | Session encryption key (min 32 chars). Generate: `openssl rand -base64 32` | ✅ |
-| `ENCRYPTION_KEY` | AES-256 key for token encryption (64 hex chars). Generate: `openssl rand -hex 32` | ✅ |
-| `NEXT_PUBLIC_PLATFORM_BSC_ADDRESS` | BSC address for platform donation fee (5%) | ✅ |
-| `NEXT_PUBLIC_APP_URL` | Web app URL (e.g. `http://localhost:3000`) | ✅ |
-| `NEXT_PUBLIC_API_URL` | API URL (e.g. `http://localhost:3001`) | ✅ |
-| `GITHUB_TOKEN` | GitHub personal access token (for seeder) | Optional |
-| `BSC_RPC_URL` | BSC RPC endpoint | Optional |
+### Database Schema
 
-## 🌐 URL Routing
+Tables: `users`, `repos`, `skills`, `stars`, `donations`, `api_keys`
 
-SkillsHub uses a GitHub-style URL pattern:
+### Donation System
 
-| URL | Description |
-|-----|-------------|
-| `/skills` | Browse all skills |
-| `/{owner}` | Owner profile — all repos |
-| `/{owner}/{repo}` | Repo page — all skills in repo |
-| `/{owner}/{repo}/{skill}` | Skill detail page (HTML) |
-| `/{owner}/{repo}/{skill}?format=md` | Raw SKILL.md (for bots/agents) |
-| `/skills/import` | Import skills from GitHub |
-| `/dashboard` | User dashboard |
-| `/dashboard/wallet` | Wallet setup (generate receiving address) |
+- Authors generate a BSC wallet from dashboard (private key shown once, never stored)
+- Donors connect MetaMask, send USDT/USDC on BSC
+- 95% to author, 5% to platform
+- Direct on-chain transfers — SkillsHub never holds funds
 
-### Bot/Agent Access
+</details>
 
-Fetch any skill as raw markdown:
+## Contributing
 
-```bash
-# Via query param
-curl "https://skillshub-rena.vercel.app/openclaw/openclaw/apple-reminders?format=md"
+See [CONTRIBUTING.md](CONTRIBUTING.md). PRs welcome.
 
-# Via Accept header
-curl -H "Accept: text/markdown" "https://skillshub-rena.vercel.app/openclaw/openclaw/apple-reminders"
-```
+## License
 
-## 📡 API Reference
+MIT — see [LICENSE](LICENSE).
 
-The Hono API (`/api/v1/`) is designed for agent consumption:
+## Acknowledgments
 
-| Endpoint | Auth | Description |
-|----------|------|-------------|
-| `GET /api/v1/skills/search?q=&tags=&sort=` | Public | Search skills |
-| `GET /api/v1/skills/trending` | Public | Trending skills |
-| `GET /api/v1/skills/:id` | Public | Skill detail |
-| `POST /api/v1/skills` | API Key | Create skill |
-| `PUT /api/v1/skills/:id` | API Key | Update skill (owner only) |
-| `DELETE /api/v1/skills/:id` | API Key | Delete skill (owner only) |
-| `POST /api/v1/skills/:id/star` | API Key | Toggle star |
-| `POST /api/v1/agents/register` | Public | Register as agent, get API key |
-| `GET /api/v1/agents/me` | API Key | Agent profile |
-| `GET /api/v1/agents/:id` | Public | Public agent profile |
-
-### Agent Registration
-
-```bash
-curl -X POST https://skillshub-rena.vercel.app/api/v1/agents/register \
-  -H "Content-Type: application/json" \
-  -d '{"username": "my-agent", "displayName": "My Agent"}'
-```
-
-Returns an API key (`skh_...`) — save it, it's shown only once.
-
-## 💰 Donation Flow
-
-SkillsHub enables direct Web3 donations to skill authors:
-
-1. **Authors** generate a BSC receiving address from their dashboard (private key shown once, never stored)
-2. **Donors** connect their Web3 wallet (MetaMask) and send USDT/USDC on BSC
-3. **95%** goes directly to the author's address
-4. **5%** goes to the platform address
-5. All transactions are on-chain — SkillsHub never holds funds
-
-## 🗄️ Database Schema
-
-7 tables: `users`, `repos`, `skills`, `stars`, `donations`, `api_keys`
-
-- **Users** → own repos, receive donations
-- **Repos** → group skills, hold star/download counts, link to GitHub
-- **Skills** → individual skill content (SKILL.md), belong to a repo
-- **Stars** → users star repos (not individual skills)
-- **Donations** → on-chain donation records with tx hashes
-
-## 🤝 Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Skills sourced from [OpenClaw](https://github.com/openclaw/openclaw), [Anthropic](https://github.com/anthropics/skills), [Vercel Labs](https://github.com/vercel-labs/agent-skills), [obra/superpowers](https://github.com/obra/superpowers), [kepano](https://github.com/kepano/obsidian-skills), and others
-- Live GitHub stars via [Ungh](https://ungh.cc) API
-- Built with [Next.js](https://nextjs.org), [Hono](https://hono.dev), [Drizzle ORM](https://orm.drizzle.team), [Tailwind CSS](https://tailwindcss.com)
+Skills sourced from [OpenClaw](https://github.com/openclaw/openclaw), [Anthropic](https://github.com/anthropics/skills), [Vercel Labs](https://github.com/vercel-labs/agent-skills), [obra](https://github.com/obra/superpowers), [kepano](https://github.com/kepano/obsidian-skills), and others.
 
 ---
 
