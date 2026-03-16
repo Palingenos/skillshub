@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { getUser } from "@/lib/session";
 import { getDb } from "@/lib/db";
 import { skills } from "@skillshub/db/schema";
@@ -53,4 +54,37 @@ export async function PATCH(
     .returning();
 
   return Response.json({ data: updated });
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const user = await getUser();
+  if (!user) {
+    return Response.json(
+      { error: { code: "UNAUTHORIZED", message: "Login required" } },
+      { status: 401 }
+    );
+  }
+
+  const { id } = await params;
+  const db = getDb();
+
+  const [existing] = await db
+    .select({ id: skills.id })
+    .from(skills)
+    .where(and(eq(skills.id, id), eq(skills.ownerId, user.userId)))
+    .limit(1);
+
+  if (!existing) {
+    return Response.json(
+      { error: { code: "NOT_FOUND", message: "Skill not found or not authorized" } },
+      { status: 404 }
+    );
+  }
+
+  await db.delete(skills).where(eq(skills.id, id));
+
+  return Response.json({ data: { id, deleted: true } });
 }
