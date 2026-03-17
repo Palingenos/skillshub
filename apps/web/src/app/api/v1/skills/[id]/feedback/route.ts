@@ -69,7 +69,7 @@ export async function POST(
   await db.execute(sql`
     INSERT INTO skill_feedback (id, skill_id, agent_id, task, helpful, context)
     VALUES (gen_random_uuid(), ${id}, ${auth.userId}, ${task}, ${helpful}, ${context ?? null})
-    ON CONFLICT (skill_id, agent_id, (created_at::date))
+    ON CONFLICT (skill_id, agent_id, CAST(created_at AT TIME ZONE 'UTC' AS date))
     DO UPDATE SET task = EXCLUDED.task, helpful = EXCLUDED.helpful, context = EXCLUDED.context, created_at = NOW()
   `);
 
