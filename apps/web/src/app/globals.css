@@ -235,6 +235,16 @@ body::after {
 .prose pre {
   border: 1px solid #1a1a1a;
   border-radius: 0.375rem;
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+.prose table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 .prose code:not(pre code) {

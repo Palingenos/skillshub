@@ -148,7 +148,7 @@ export default async function SkillDetailPage({ params }: Props) {
 
           {/* README */}
           {result.readme && (
-            <div className="prose prose-invert mt-8 max-w-none rounded border border-neutral-800/40 bg-neutral-900/20 p-6 md:p-8">
+            <div className="prose prose-invert mt-8 max-w-none rounded border border-neutral-800/40 bg-neutral-900/20 p-6 md:p-8 overflow-hidden [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-words [&_pre_code]:break-normal [&_table]:overflow-x-auto [&_table]:block">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {result.readme}
               </ReactMarkdown>
