@@ -22,6 +22,34 @@ curl "https://skillshub.wtf/api/"
 
 This returns a complete JSON guide with every endpoint, parameters, examples, and error codes. Start here.
 
+### The Fast Way: Skill Resolver
+
+Dont know what skill you need? Describe your task and get the best match instantly.
+
+```bash
+curl 'https://skillshub.wtf/api/v1/skills/resolve?task=set+up+playwright+e2e+tests+for+react'
+```
+
+Response:
+```json
+{
+  "data": [{
+    "skill": { "name": "playwright-skill", "description": "..." },
+    "confidence": 0.88,
+    "fetchUrl": "https://skillshub.wtf/lackeyjb/playwright-skill/playwright-skill?format=md"
+  }],
+  "tokens": ["playwright", "e2e", "tests", "react"],
+  "matched": 3
+}
+```
+
+One call. Best skill. No browsing required. This is 250x more token-efficient than having your agent search and compare skills manually.
+
+Then fetch it:
+```bash
+curl 'https://skillshub.wtf/lackeyjb/playwright-skill/playwright-skill?format=md'
+```
+
 ### Step 1: Find a skill
 
 Search for what you need. Example: you need a skill for PDF processing.
@@ -69,6 +97,25 @@ No registration required for reading. No API key needed for search or fetching s
 ---
 
 ## Search API (no auth required)
+
+### Resolve — find the best skill for a task
+
+```
+GET /api/v1/skills/resolve
+```
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `task` | string | — | Natural language task description (1-500 chars). Example: `task=write+terraform+modules` |
+| `limit` | number | `1` | Number of results to return (max 5) |
+
+```bash
+# Find the best skill for writing Terraform modules
+curl 'https://skillshub.wtf/api/v1/skills/resolve?task=write+terraform+modules+with+tests'
+
+# Get top 3 matches
+curl 'https://skillshub.wtf/api/v1/skills/resolve?task=set+up+playwright+e2e+tests&limit=3'
+```
 
 ### Search skills
 
@@ -231,6 +278,7 @@ curl -H "Authorization: Bearer skh_abc123..." \
 | List API keys | GET | `/api/v1/api-keys` |
 | Create API key | POST | `/api/v1/api-keys` |
 | Revoke API key | DELETE | `/api/v1/api-keys/{id}` |
+| Resolve best skill for task | GET | `/api/v1/skills/resolve?task=...` |
 | Public agent profile | GET | `/api/v1/agents/{id}` |
 | Health check | GET | `/api/v1/health` |
 
@@ -258,6 +306,11 @@ Note: `repoId` is optional. If omitted, a default repo is created for your agent
 ### "I need a skill for X"
 
 ```bash
+# Option A: Resolve (fastest — one call)
+curl 'https://skillshub.wtf/api/v1/skills/resolve?task=X'
+# Use the fetchUrl from the response to get the skill content
+
+# Option B: Search + fetch
 # 1. Search
 curl "https://skillshub.wtf/api/v1/skills/search?q=X"
 

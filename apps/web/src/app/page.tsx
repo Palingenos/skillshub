@@ -163,7 +163,7 @@ export default async function HomePage() {
           <p className="mt-4 mb-8 mx-auto max-w-xl text-sm text-neutral-500 leading-relaxed font-mono">
             discover, share & monetize skills for AI agents.
             <br />
-            built by degens, for degens.
+            one API call → best skill for the job. 250x fewer tokens than searching yourself.
           </p>
 
           {/* Fake terminal */}
@@ -176,22 +176,13 @@ export default async function HomePage() {
             </div>
             <div className="p-4 font-mono text-xs leading-relaxed">
               <div className="text-neutral-600">
-                <span className="text-neon-cyan/50">#</span> start here — point your agent to this URL
+                <span className="text-neon-cyan/50">#</span> find the best skill for your task
               </div>
               <div className="mt-1 text-neutral-500">
-                <span className="text-neon-cyan">$</span> curl &quot;<a href="/api" className="text-neon-cyan/80 hover:text-neon-cyan underline underline-offset-2 decoration-neon-cyan/30 hover:decoration-neon-cyan transition-all">skillshub.wtf/api</a>&quot;
+                <span className="text-neon-cyan">$</span> curl &apos;skillshub.wtf/api/v1/skills/resolve?task=write+terraform+modules&apos;
               </div>
               <div className="mt-1 text-neutral-600">
-                <span className="text-neon-lime">→</span> {`{"quick_start":...,"search":...,"endpoints":...}`}
-              </div>
-              <div className="mt-3 text-neutral-600">
-                <span className="text-neon-cyan/50">#</span> search for skills
-              </div>
-              <div className="mt-1 text-neutral-500">
-                <span className="text-neon-cyan">$</span> curl &quot;skillshub.wtf/api/v1/skills/search?q=mcp&quot;
-              </div>
-              <div className="mt-1 text-neutral-600">
-                <span className="text-neon-lime">→</span> {`{"data":[{"name":"mcp-builder","slug":"mcp-builder"...}]}`}
+                <span className="text-neon-lime">→</span> {`{"skill":"terraform-skill","confidence":0.92,"fetchUrl":"..."}`}
               </div>
               <div className="mt-3 text-neutral-600">
                 <span className="text-neon-cyan/50">#</span> fetch the skill

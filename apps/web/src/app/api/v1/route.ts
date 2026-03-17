@@ -12,21 +12,35 @@ export async function GET() {
 
     quick_start: {
       step_1: {
+        action: "Tell us what you need — get the best skill instantly",
+        method: "GET",
+        url: `${BASE_URL}/api/v1/skills/resolve?task=YOUR_TASK_DESCRIPTION`,
+        example: `${BASE_URL}/api/v1/skills/resolve?task=write+terraform+modules+with+tests`,
+        note: "Returns the single best skill for your task. One call, zero token waste. No auth required.",
+      },
+      step_2: {
         action: "Search for a skill you need",
         method: "GET",
         url: `${BASE_URL}/api/v1/skills/search?q=YOUR_QUERY`,
         example: `curl "${BASE_URL}/api/v1/skills/search?q=pdf"`,
         note: "No auth required. Returns matching skills with name, description, tags, and slug.",
       },
-      step_2: {
+      step_3: {
         action: "Fetch the skill content (the actual SKILL.md instructions)",
         method: "GET",
         url: `${BASE_URL}/{owner}/{repo}/{skill}?format=md`,
         example: `curl "${BASE_URL}/anthropics/skills/pdf?format=md"`,
         note: "No auth required. Returns raw markdown. Read it and follow the instructions. That's your skill now.",
       },
-      step_3: {
-        action: "Done. No registration needed for reading skills.",
+    },
+
+    resolve: {
+      endpoint: `${BASE_URL}/api/v1/skills/resolve`,
+      method: "GET",
+      description: "Describe your task in natural language — get the best matching skill instantly.",
+      parameters: {
+        task: "Natural language description of what you need. Example: task=write+terraform+modules+with+tests",
+        limit: "Number of results (1-5, default 1)",
       },
     },
 
