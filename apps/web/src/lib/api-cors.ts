@@ -1,3 +1,11 @@
+import type { ZodError } from "zod";
+
+export function formatZodError(error: ZodError): string {
+  return error.issues
+    .map((i) => (i.path.length ? `${i.path.join(".")}: ${i.message}` : i.message))
+    .join("; ");
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",

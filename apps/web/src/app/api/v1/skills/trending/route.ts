@@ -2,8 +2,18 @@ import { getDb } from "@/lib/db";
 import { corsJson, OPTIONS as corsOptions } from "@/lib/api-cors";
 import { skills, repos, users } from "@skillshub/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { z } from "zod";
 
-export async function GET() {
+const trendingQuerySchema = z.object({
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+});
+
+export async function GET(request: Request) {
+  const url = new URL(request.url);
+  const query = Object.fromEntries(url.searchParams);
+  const parsed = trendingQuerySchema.safeParse(query);
+  const limit = parsed.success ? parsed.data.limit : 20;
+
   const db = getDb();
 
   const data = await db
@@ -33,9 +43,9 @@ export async function GET() {
     .innerJoin(users, eq(skills.ownerId, users.id))
     .where(eq(skills.isPublished, true))
     .orderBy(desc(repos.starCount), desc(skills.createdAt))
-    .limit(20);
+    .limit(limit);
 
-  return corsJson({ data });
+  return corsJson({ data, total: data.length });
 }
 
 export { corsOptions as OPTIONS };

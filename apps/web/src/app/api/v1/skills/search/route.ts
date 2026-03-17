@@ -1,5 +1,5 @@
 import { getDb } from "@/lib/db";
-import { corsJson, OPTIONS as corsOptions } from "@/lib/api-cors";
+import { corsJson, OPTIONS as corsOptions, formatZodError } from "@/lib/api-cors";
 import { skills, repos, users } from "@skillshub/db/schema";
 import { skillSearchSchema } from "@skillshub/shared/validators";
 import { eq, desc, sql, and, arrayContains } from "drizzle-orm";
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
 
   if (!parsed.success) {
     return corsJson(
-      { error: { code: "VALIDATION_ERROR", message: parsed.error.message } },
+      { error: { code: "VALIDATION_ERROR", message: formatZodError(parsed.error) } },
       { status: 400 }
     );
   }

@@ -1,5 +1,5 @@
 import { getDb } from "@/lib/db";
-import { corsJson, OPTIONS as corsOptions } from "@/lib/api-cors";
+import { corsJson, OPTIONS as corsOptions, formatZodError } from "@/lib/api-cors";
 import { authenticateApiKey, isAuthError } from "@/lib/api-key-auth";
 import { skills, repos, users } from "@skillshub/db/schema";
 import { updateSkillSchema } from "@skillshub/shared/validators";
@@ -85,7 +85,7 @@ export async function PUT(
   const parsed = updateSkillSchema.safeParse(body);
   if (!parsed.success) {
     return corsJson(
-      { error: { code: "VALIDATION_ERROR", message: parsed.error.message } },
+      { error: { code: "VALIDATION_ERROR", message: formatZodError(parsed.error) } },
       { status: 400 }
     );
   }

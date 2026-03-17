@@ -42,7 +42,7 @@ export default function RootLayout({
                 <span>built by degens, for degens</span>
               </div>
               <div className="flex items-center gap-4">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-neon-cyan transition-colors">
+                <a href="https://github.com/ComeOnOliver/skillshub" target="_blank" rel="noopener noreferrer" className="hover:text-neon-cyan transition-colors">
                   github
                 </a>
                 <span className="text-neutral-800">│</span>

@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { getDb } from "@/lib/db";
-import { corsJson, OPTIONS as corsOptions } from "@/lib/api-cors";
+import { corsJson, OPTIONS as corsOptions, formatZodError } from "@/lib/api-cors";
 import { authenticateApiKey, isAuthError } from "@/lib/api-key-auth";
 import { apiKeys } from "@skillshub/db/schema";
 import { createApiKeySchema } from "@skillshub/shared/validators";
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   if (!parsed.success) {
     return corsJson(
-      { error: { code: "VALIDATION_ERROR", message: parsed.error.message } },
+      { error: { code: "VALIDATION_ERROR", message: formatZodError(parsed.error) } },
       { status: 400 }
     );
   }

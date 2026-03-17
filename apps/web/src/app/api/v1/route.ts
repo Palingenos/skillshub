@@ -36,6 +36,8 @@ export async function GET() {
       parameters: {
         q: "Search query (searches name and description). Example: q=pdf",
         tags: "Comma-separated tag filter. Example: tags=ai,mcp",
+        owner: "Filter by GitHub repo owner. Example: owner=openclaw",
+        repo: "Filter by GitHub repo name. Example: repo=openclaw",
         sort: "stars | downloads | recent (default: stars)",
         page: "Page number, starts at 1 (default: 1)",
         limit: "Results per page, max 50 (default: 20)",

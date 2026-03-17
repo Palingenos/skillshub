@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { getDb } from "@/lib/db";
-import { corsJson, OPTIONS as corsOptions } from "@/lib/api-cors";
+import { corsJson, OPTIONS as corsOptions, formatZodError } from "@/lib/api-cors";
 import { users, apiKeys } from "@skillshub/db/schema";
 import { agentRegisterSchema } from "@skillshub/shared/validators";
 import { eq } from "drizzle-orm";
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
   if (!parsed.success) {
     return corsJson(
-      { error: { code: "VALIDATION_ERROR", message: parsed.error.message } },
+      { error: { code: "VALIDATION_ERROR", message: formatZodError(parsed.error) } },
       { status: 400 }
     );
   }
