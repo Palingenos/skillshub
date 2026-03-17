@@ -53,31 +53,36 @@ function scoreSkill(skill: SkillRow, tokens: string[], tokenWeights: Map<string,
   const nameLower = skill.name.toLowerCase();
   const nameParts = nameLower.split(/[-_\s]+/);
   const descLower = (skill.description ?? "").toLowerCase();
+  const descWords = descLower.split(/[\s,.\-_/()]+/).filter(Boolean);
   const tagsLower = skill.tags.map((t) => t.toLowerCase());
 
-  // TEXT RELEVANCE (0-60)
-  // Each token is weighted by specificity — rare tokens (matching fewer skills) score higher
+  // TEXT RELEVANCE (0-70)
   let textScore = 0;
   let nameHits = 0;
+  let descHits = 0;
 
   for (const token of tokens) {
     const w = tokenWeights.get(token) ?? 1;
 
-    // Name matching — strongest signal, amplified by specificity
+    // Name matching — strongest signal
     if (nameLower === token) {
       textScore += 20 * w;
       nameHits++;
     } else if (nameParts.includes(token)) {
-      textScore += 15 * w; // exact word in name
+      textScore += 15 * w;
       nameHits++;
     } else if (nameLower.includes(token)) {
       textScore += 8 * w;
       nameHits++;
     }
 
-    // Description matching — lower weight
-    if (descLower.includes(token)) {
-      textScore += 2 * w;
+    // Description matching — boost for exact word match vs substring
+    if (descWords.includes(token)) {
+      textScore += 6 * w; // exact word in description (was 2)
+      descHits++;
+    } else if (descLower.includes(token)) {
+      textScore += 3 * w; // substring in description
+      descHits++;
     }
 
     // Tag matching
@@ -89,7 +94,13 @@ function scoreSkill(skill: SkillRow, tokens: string[], tokenWeights: Map<string,
   // Bonus: multiple tokens hitting the name = very relevant
   if (nameHits >= 2) textScore += 12;
 
-  textScore = Math.min(textScore, 60);
+  // Bonus: high description coverage = the skill is about this topic
+  // If 60%+ of query tokens appear in description, big boost
+  const descCoverage = tokens.length > 0 ? descHits / tokens.length : 0;
+  if (descCoverage >= 0.6) textScore += 10;
+  else if (descCoverage >= 0.4) textScore += 5;
+
+  textScore = Math.min(textScore, 70);
 
   // QUALITY (0-25)
   const readmeLen = Math.max(skill.readmeLength, 1);
@@ -213,7 +224,7 @@ export async function GET(request: Request) {
 
   // Filter by threshold, then cap at limit
   const aboveThreshold = allScored.filter(
-    (r) => Math.round((r.score / 100) * 100) / 100 >= threshold,
+    (r) => Math.round((r.score / 110) * 100) / 100 >= threshold,
   );
   const matched = aboveThreshold.length;
   const scored = aboveThreshold.slice(0, limit);
@@ -230,7 +241,7 @@ export async function GET(request: Request) {
       owner: r.skill.owner,
     },
     score: r.score,
-    confidence: Math.round((r.score / 100) * 100) / 100,
+    confidence: Math.round((r.score / 110) * 100) / 100,
     relativeScore: topScore > 0 ? Math.round((r.score / topScore) * 100) / 100 : 0,
     fetchUrl: `${BASE_URL}/${r.skill.repo.githubOwner ?? r.skill.owner.username}/${r.skill.repo.githubRepoName ?? r.skill.slug}/${r.skill.slug}?format=md`,
   }));
