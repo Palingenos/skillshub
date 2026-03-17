@@ -32,7 +32,6 @@ export default async function SkillDetailPage({ params }: Props) {
       manifest: skills.manifest,
       tags: skills.tags,
       isPublished: skills.isPublished,
-      installCommand: skills.installCommand,
       createdAt: skills.createdAt,
       updatedAt: skills.updatedAt,
       ownerId: skills.ownerId,
@@ -86,8 +85,7 @@ export default async function SkillDetailPage({ params }: Props) {
     hasStarred = !!star;
   }
 
-  const installCmd =
-    result.installCommand ?? `npx skillshub add ${owner}/${repo}/${skillSlug}`;
+  const fetchUrl = `https://skillshub.wtf/${owner}/${repo}/${skillSlug}?format=md`;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 animate-fade-in">
@@ -127,28 +125,22 @@ export default async function SkillDetailPage({ params }: Props) {
             </p>
           )}
 
-          {/* Install command — terminal style */}
-          <div className="mt-6 rounded border border-neutral-800/60 bg-[#0a0a0a] overflow-hidden">
-            <div className="flex items-center justify-between px-3 py-1.5 border-b border-neutral-800/40">
-              <div className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-red-500/50" />
-                <span className="h-2 w-2 rounded-full bg-yellow-500/50" />
-                <span className="h-2 w-2 rounded-full bg-green-500/50" />
-              </div>
-              <span className="font-mono text-[10px] text-neutral-700">install</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-3">
-              <span className="font-mono text-xs text-neon-cyan/50 select-none">$</span>
-              <code className="flex-1 font-mono text-xs text-terminal-green">
-                {installCmd}
-              </code>
-              <CopyButton text={installCmd} />
-            </div>
+          {/* Fetch skill */}
+          <div className="mt-6 flex items-center gap-2 rounded border border-neutral-800/40 bg-[#0a0a0a] px-4 py-3">
+            <code className="flex-1 font-mono text-xs text-neutral-400 truncate">
+              curl &quot;{fetchUrl}&quot;
+            </code>
+            <CopyButton text={`curl "${fetchUrl}"`} />
           </div>
 
           {/* README */}
           {result.readme && (
             <div className="prose prose-invert mt-8 max-w-none rounded border border-neutral-800/40 bg-neutral-900/20 p-6 md:p-8 overflow-hidden [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-words [&_pre_code]:break-normal [&_table]:overflow-x-auto [&_table]:block">
+              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-neutral-800/40 not-prose">
+                <span className="font-mono text-xs text-neon-cyan/60">SKILL.md</span>
+                <span className="font-mono text-[10px] text-neutral-600">&bull;</span>
+                <span className="font-mono text-xs text-neutral-600">{result.name}</span>
+              </div>
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {result.readme}
               </ReactMarkdown>
