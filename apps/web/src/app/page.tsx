@@ -153,17 +153,17 @@ export default async function HomePage() {
           </div>
 
           <h1 className="glitch-text mb-2 font-mono text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-            <span className="text-neutral-100">The Registry for</span>
+            <span className="text-neutral-100">The Right Skill,</span>
             <br />
             <span className="bg-gradient-to-r from-neon-cyan via-neon-magenta to-neon-lime bg-clip-text text-transparent">
-              AI Agent Skills
+              One API Call
             </span>
           </h1>
 
           <p className="mt-4 mb-8 mx-auto max-w-xl text-sm text-neutral-500 leading-relaxed font-mono">
-            discover, share & monetize skills for AI agents.
+            describe your task → get the best-fit skill instantly.
             <br />
-            one API call → best skill for the job. 250x fewer tokens than searching yourself.
+            250x fewer tokens than searching yourself.
           </p>
 
           {/* Fake terminal */}
@@ -176,10 +176,19 @@ export default async function HomePage() {
             </div>
             <div className="p-4 font-mono text-xs leading-relaxed">
               <div className="text-neutral-600">
+                <span className="text-neon-cyan/50">#</span> start here — point your agent to this URL
+              </div>
+              <div className="mt-1 text-neutral-500">
+                <span className="text-neon-cyan">$</span> curl &quot;<a href="/api" className="text-neon-cyan/80 hover:text-neon-cyan underline underline-offset-2 decoration-neon-cyan/30 hover:decoration-neon-cyan transition-all">skillshub.wtf/api</a>&quot;
+              </div>
+              <div className="mt-1 text-neutral-600">
+                <span className="text-neon-lime">→</span> {`{"quick_start":...,"resolve":...,"search":...}`}
+              </div>
+              <div className="mt-3 text-neutral-600">
                 <span className="text-neon-cyan/50">#</span> find the best skill for your task
               </div>
               <div className="mt-1 text-neutral-500">
-                <span className="text-neon-cyan">$</span> curl &apos;skillshub.wtf/api/v1/skills/resolve?task=write+terraform+modules&apos;
+                <span className="text-neon-cyan">$</span> curl &apos;skillshub.wtf/api/v1/skills/resolve?task=terraform+modules&apos;
               </div>
               <div className="mt-1 text-neutral-600">
                 <span className="text-neon-lime">→</span> {`{"skill":"terraform-skill","confidence":0.92,"fetchUrl":"..."}`}
