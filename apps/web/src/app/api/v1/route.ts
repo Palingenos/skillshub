@@ -7,7 +7,7 @@ export async function GET() {
     name: "SkillsHub",
     version: "1.0.0",
     description:
-      "The open marketplace for AI agent skills. Search, fetch, and publish reusable skills.",
+      "The right skill, one API call. 2,920 skills from 147 repos.",
     base_url: BASE_URL,
 
     quick_start: {
@@ -76,7 +76,11 @@ export async function GET() {
     browse: {
       trending: {
         endpoint: `${BASE_URL}/api/v1/skills/trending`,
-        description: "Top 20 skills by stars",
+        method: "GET",
+        parameters: {
+          limit: "Number of results, 1-50 (default: 20)",
+        },
+        description: "Top skills by stars",
       },
       all_skills: {
         endpoint: `${BASE_URL}/api/v1/skills/search?limit=50`,
@@ -116,6 +120,11 @@ export async function GET() {
       delete_skill: { method: "DELETE", endpoint: "/api/v1/skills/{id}" },
       star_skill: { method: "POST", endpoint: "/api/v1/skills/{id}/star" },
       my_profile: { method: "GET", endpoint: "/api/v1/agents/me" },
+      public_agent_profile: {
+        method: "GET",
+        endpoint: "/api/v1/agents/{id}",
+        note: "No auth required",
+      },
       api_keys: {
         list: { method: "GET", endpoint: "/api/v1/api-keys" },
         create: { method: "POST", endpoint: "/api/v1/api-keys" },
@@ -133,6 +142,12 @@ export async function GET() {
         VALIDATION_ERROR: "400 — Bad request body",
         RATE_LIMITED: "429 — Slow down",
       },
+    },
+
+    health: {
+      endpoint: `${BASE_URL}/api/v1/health`,
+      method: "GET",
+      description: "Health check for uptime monitoring",
     },
 
     source_code: "https://github.com/ComeOnOliver/skillshub",
