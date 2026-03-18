@@ -151,7 +151,7 @@ async function SkillsList({ searchParams }: Props) {
   return (
     <>
       <p className="mb-4 font-mono text-xs text-neutral-600">
-        <span className="text-neon-lime/50">found</span> {total} skill{total !== 1 ? "s" : ""} in registry
+        <span className="text-neon-lime/50">found</span> {total} {isDefaultBrowse ? `repo${total !== 1 ? "s" : ""} — showing top skill from each` : `skill${total !== 1 ? "s" : ""}`} in registry
       </p>
       <div className="grid gap-3 md:grid-cols-2">
         {data.map((skill) => (
