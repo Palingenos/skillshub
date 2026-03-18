@@ -31,8 +31,10 @@ async function SkillsList({ searchParams }: Props) {
   }
 
   const sort = params.sort ?? "stars";
-  const orderBy =
-    sort === "downloads"
+  const isDefaultBrowse = !params.q && sort === "stars";
+  const orderBy = isDefaultBrowse
+    ? sql`${repos.starCount} DESC, md5(${repos.id}::text || ${skills.id}::text)`
+    : sort === "downloads"
       ? desc(repos.downloadCount)
       : sort === "recent"
         ? desc(skills.createdAt)

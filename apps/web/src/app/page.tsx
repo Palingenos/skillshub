@@ -6,6 +6,7 @@ import { eq, desc, sql } from "drizzle-orm";
 import { getMultiRepoStars } from "@/lib/ungh";
 import { AgentLogos } from "@/components/agent-logos";
 import { TerminalToggle } from "@/components/terminal-toggle";
+import { SkillCard } from "@/components/skill-card";
 
 const featureColorClasses: Record<string, string> = {
   "neon-cyan": "text-neon-cyan",
@@ -55,6 +56,71 @@ function formatCount(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`;
   return String(n);
+}
+
+async function PopularSkills() {
+  const db = getDb();
+  const data = await db.execute<{
+    id: string;
+    slug: string;
+    name: string;
+    description: string | null;
+    tags: string[];
+    starCount: number;
+    downloadCount: number;
+    githubOwner: string | null;
+    githubRepoName: string | null;
+    ownerId: string;
+    username: string;
+    displayName: string | null;
+    avatarUrl: string | null;
+  }>(sql`
+    SELECT DISTINCT ON (r.github_owner)
+      s.id, s.slug, s.name, s.description, s.tags,
+      r.star_count AS "starCount",
+      r.download_count AS "downloadCount",
+      r.github_owner AS "githubOwner",
+      r.github_repo_name AS "githubRepoName",
+      u.id AS "ownerId",
+      u.username,
+      u.display_name AS "displayName",
+      u.avatar_url AS "avatarUrl"
+    FROM skills s
+    JOIN repos r ON s.repo_id = r.id
+    JOIN users u ON s.owner_id = u.id
+    WHERE s.is_published = true
+      AND r.github_owner IN ('trailofbits', 'microsoft', 'openai', 'hashicorp', 'antonbabenko', 'openclaw')
+    ORDER BY r.github_owner, s.fetch_count DESC
+    LIMIT 6
+  `);
+
+  if (data.rows.length === 0) return null;
+
+  return (
+    <div className="grid gap-3 md:grid-cols-3">
+      {data.rows.map((row) => (
+        <SkillCard
+          key={row.id}
+          id={row.id}
+          slug={row.slug}
+          name={row.name}
+          description={row.description}
+          tags={row.tags}
+          repo={{
+            starCount: row.starCount,
+            downloadCount: row.downloadCount,
+            githubOwner: row.githubOwner,
+            githubRepoName: row.githubRepoName,
+          }}
+          owner={{
+            username: row.username,
+            displayName: row.displayName,
+            avatarUrl: row.avatarUrl,
+          }}
+        />
+      ))}
+    </div>
+  );
 }
 
 async function TopRepos() {
@@ -256,6 +322,19 @@ export default async function HomePage() {
             </p>
           </div>
         ))}
+      </section>
+
+      {/* ── Popular Skills ────────────────────── */}
+      <section className="pb-16">
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="font-mono text-sm text-neutral-400">
+            <span className="text-neon-cyan/50">&gt;</span> popular_skills <span className="text-neutral-600">--curated</span>
+          </h2>
+          <Link href="/skills" className="font-mono text-xs text-neutral-600 hover:text-neon-cyan transition-colors">
+            browse all →
+          </Link>
+        </div>
+        <PopularSkills />
       </section>
 
       {/* ── Top Repos ─────────────────────────── */}
