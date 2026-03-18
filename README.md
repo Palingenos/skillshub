@@ -1,5 +1,7 @@
 # 🧠 SkillsHub — The Right Skill, One API Call
 
+**[English](README.md) | [中文](README.zh-CN.md)**
+
 **The open registry for AI agent skills. Describe your task → get the best-fit skill instantly.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
