@@ -34,8 +34,10 @@ import { eq, desc, sql, and, arrayContains } from "drizzle-orm";
 function buildRelevanceOrder(q: string) {
   const lowerQ = q.toLowerCase();
   return sql`(
+    -- Exact slug/name boost (+20)
+    CASE WHEN lower(${skills.slug}) = ${lowerQ} OR lower(${skills.name}) = ${lowerQ} THEN 20 ELSE 0 END
     -- Text match score (0-50)
-    CASE
+    + CASE
       WHEN lower(${skills.name}) = ${lowerQ} THEN 50
       WHEN lower(${skills.name}) LIKE ${lowerQ + '%'} THEN 40
       WHEN lower(${skills.name}) LIKE ${'%' + lowerQ + '%'} THEN 30

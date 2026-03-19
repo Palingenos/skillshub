@@ -84,6 +84,7 @@ const MIN_FEEDBACK_FOR_BONUS = 5;
 
 function scoreSkill(skill: SkillRow, tokens: string[], tokenWeights: Map<string, number>): number {
   const nameLower = skill.name.toLowerCase();
+  const slugLower = skill.slug.toLowerCase();
   const nameParts = nameLower.split(/[-_\s]+/);
   const descLower = (skill.description ?? "").toLowerCase();
   const descWords = descLower.split(/[\s,.\-_/()]+/).filter(Boolean);
@@ -93,6 +94,15 @@ function scoreSkill(skill: SkillRow, tokens: string[], tokenWeights: Map<string,
   let textScore = 0;
   let nameHits = 0;
   let descHits = 0;
+
+  // Exact slug/name match boost — highest-impact signal for resolve accuracy
+  // If any query token exactly matches the slug or name, +20 points
+  for (const token of tokens) {
+    if (slugLower === token || nameLower === token) {
+      textScore += 20;
+      break; // only apply once
+    }
+  }
 
   for (const token of tokens) {
     const w = tokenWeights.get(token) ?? 1;
