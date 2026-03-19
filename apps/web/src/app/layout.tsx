@@ -25,10 +25,9 @@ export const metadata: Metadata = {
       "Discover AI agent skills. One API call to find the right skill for any task.",
     url: "https://skillshub.wtf",
     type: "website",
-    images: [{ url: "https://skillshub.wtf/og-image.png" }],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "SkillsHub — AI Agent Skills Registry",
     description:
       "Discover AI agent skills. One API call to find the right skill for any task.",
