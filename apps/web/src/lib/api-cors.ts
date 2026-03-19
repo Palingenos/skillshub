@@ -20,9 +20,11 @@ const readCorsHeaders = {
 
 function getWriteCorsHeaders(request?: Request): Record<string, string> {
   const origin = request?.headers.get("Origin") ?? "";
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    return { "Vary": "Origin" };
+  }
   return {
-    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Origin": origin,
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Vary": "Origin",
@@ -46,9 +48,16 @@ export function writeCorsJson(data: unknown, request: Request, init?: { status?:
 }
 
 export function methodNotAllowed(allowed: string[]) {
-  return corsJson(
-    { error: { code: "METHOD_NOT_ALLOWED", message: `Method not allowed. Use ${allowed.join(", ")} for this endpoint.` } },
-    { status: 405 }
+  return new Response(
+    JSON.stringify({ error: { code: "METHOD_NOT_ALLOWED", message: `Method not allowed. Use ${allowed.join(", ")} for this endpoint.` } }),
+    {
+      status: 405,
+      headers: {
+        ...readCorsHeaders,
+        "Content-Type": "application/json",
+        "Allow": allowed.join(", "),
+      },
+    }
   );
 }
 
