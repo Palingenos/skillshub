@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { Eip1193Provider } from "ethers";
 import { Heart, X, Loader2, ExternalLink, AlertTriangle } from "lucide-react";
 
 const TOKEN_CONFIG = {
@@ -81,14 +82,15 @@ export function DonateButton({
     setError("");
 
     try {
-      if (typeof window === "undefined" || !(window as unknown as Record<string, unknown>).ethereum) {
+      const eth = (window as unknown as { ethereum?: { request: (...args: unknown[]) => Promise<unknown> } }).ethereum;
+      if (typeof window === "undefined" || !eth) {
         throw new Error(
           "No Web3 wallet detected. Please install MetaMask or another BSC-compatible wallet."
         );
       }
 
       const { ethers } = await import("ethers");
-      const provider = new ethers.BrowserProvider((window as unknown as Record<string, unknown>).ethereum);
+      const provider = new ethers.BrowserProvider(eth as Eip1193Provider);
 
       // Request account access
       await provider.send("eth_requestAccounts", []);
@@ -103,7 +105,7 @@ export function DonateButton({
           ]);
         } catch (switchErr: unknown) {
           // If BSC isn't added, add it
-          if ((switchErr as Record<string, unknown>).code === 4902) {
+          if ((switchErr as { code?: number }).code === 4902) {
             await provider.send("wallet_addEthereumChain", [
               {
                 chainId: "0x38",
@@ -168,11 +170,9 @@ export function DonateButton({
       setStep("success");
     } catch (err: unknown) {
       console.error("Donation failed:", err);
-      const e = err as Record<string, unknown>;
-      const info = e?.info as Record<string, unknown> | undefined;
-      const infoError = info?.error as Record<string, unknown> | undefined;
+      const e = err as { info?: { error?: { message?: string } } };
       setError(
-        (infoError?.message as string) ||
+        e?.info?.error?.message ||
           (err instanceof Error ? err.message : null) ||
           "Transaction failed. Please try again."
       );

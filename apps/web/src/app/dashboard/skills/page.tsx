@@ -85,7 +85,7 @@ export default async function MySkillsPage() {
             <span className="text-neon-cyan/40">$</span> ls repos/
           </p>
           <p className="mb-6 font-mono text-xs text-neutral-600">
-            {/* no repos yet — import from github or create one */}
+            {'// no repos yet — import from github or create one'}
           </p>
           <div className="flex items-center justify-center gap-3">
             <Link
@@ -156,7 +156,6 @@ export default async function MySkillsPage() {
                   <RepoActions
                     repoId={repo.id}
                     repoName={repo.displayName ?? repo.name}
-                    username={user.username}
                   />
                 </div>
 

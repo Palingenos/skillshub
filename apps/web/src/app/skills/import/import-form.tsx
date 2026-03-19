@@ -34,6 +34,17 @@ interface RepoInfo {
   defaultBranch: string;
 }
 
+interface ImportResult {
+  repoId: string;
+  owner: string;
+  repo: string;
+  created: number;
+  updated: number;
+  errors: number;
+  errorDetails: Array<{ dirName: string; error: string }>;
+  skills: Array<{ slug: string; name: string }>;
+}
+
 type Step = "select" | "scan" | "import" | "done";
 
 export function ImportForm() {
@@ -52,7 +63,7 @@ export function ImportForm() {
 
   const [importing, setImporting] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
-  const [importResult, setImportResult] = useState<Record<string, unknown> | null>(null);
+  const [importResult, setImportResult] = useState<ImportResult | null>(null);
 
   // Load user repos on mount
   useEffect(() => {
@@ -198,7 +209,7 @@ export function ImportForm() {
       {(step === "select" || step === "scan") && (
         <div className="rounded-lg border border-neutral-800 bg-neutral-950/50 p-6">
           <div className="mb-4 font-mono text-xs text-neutral-600">
-            <span className="text-neon-cyan">step_1</span> {/* select repository */}
+            <span className="text-neon-cyan">step_1</span> {'// select repository'}
           </div>
 
           {/* URL Input */}
@@ -311,7 +322,7 @@ export function ImportForm() {
       {step === "scan" && !scanning && skills.length > 0 && repoInfo && (
         <div className="rounded-lg border border-neutral-800 bg-neutral-950/50 p-6">
           <div className="mb-4 font-mono text-xs text-neutral-600">
-            <span className="text-neon-cyan">step_2</span> {/* select skills to import */}
+            <span className="text-neon-cyan">step_2</span> {'// select skills to import'}
           </div>
 
           {/* Repo Info */}
@@ -442,7 +453,7 @@ export function ImportForm() {
       {step === "done" && importResult && (
         <div className="rounded-lg border border-green-800/30 bg-green-900/10 p-6">
           <div className="mb-4 font-mono text-xs text-neutral-600">
-            <span className="text-green-400">done</span> {/* import complete */}
+            <span className="text-green-400">done</span> {'// import complete'}
           </div>
 
           <div className="mb-4 space-y-1 font-mono text-sm">

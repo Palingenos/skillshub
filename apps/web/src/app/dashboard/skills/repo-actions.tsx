@@ -7,7 +7,6 @@ import { MoreHorizontal, Pencil, Trash2, X } from "lucide-react";
 interface RepoActionsProps {
   repoId: string;
   repoName: string;
-  username: string;
 }
 
 export function RepoActions({ repoId, repoName }: RepoActionsProps) {

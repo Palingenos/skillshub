@@ -74,23 +74,23 @@ async function SkillsList({ searchParams }: Props) {
     const pageRows = sorted.slice(offset, offset + limit);
 
     data = pageRows.map((r: Record<string, unknown>) => ({
-      id: r.id,
-      slug: r.slug,
-      name: r.name,
-      description: r.description,
-      tags: r.tags,
-      createdAt: r.createdAt,
+      id: r.id as string,
+      slug: r.slug as string,
+      name: r.name as string,
+      description: r.description as string | null,
+      tags: r.tags as string[],
+      createdAt: r.createdAt as Date,
       repo: {
-        starCount: r.repoStarCount,
-        downloadCount: r.repoDownloadCount,
-        githubOwner: r.repoGithubOwner,
-        githubRepoName: r.repoGithubRepoName,
+        starCount: r.repoStarCount as number,
+        downloadCount: r.repoDownloadCount as number,
+        githubOwner: r.repoGithubOwner as string | null,
+        githubRepoName: r.repoGithubRepoName as string | null,
       },
       owner: {
-        id: r.ownerId,
-        username: r.ownerUsername,
-        displayName: r.ownerDisplayName,
-        avatarUrl: r.ownerAvatarUrl,
+        id: r.ownerId as string,
+        username: r.ownerUsername as string,
+        displayName: r.ownerDisplayName as string | null,
+        avatarUrl: r.ownerAvatarUrl as string | null,
       },
     }));
   } else {
@@ -138,12 +138,12 @@ async function SkillsList({ searchParams }: Props) {
         {params.q ? (
           <>
             <span className="text-neon-cyan/40">$</span> search &quot;{params.q}&quot;<br />
-            <span className="text-neutral-500 mt-1 block">{/* 0 results — try different keywords */}</span>
+            <span className="text-neutral-500 mt-1 block">{'// 0 results — try different keywords'}</span>
           </>
         ) : (
           <>
             <span className="text-neon-cyan/40">$</span> ls registry/<br />
-            <span className="text-neutral-500 mt-1 block">{/* empty — no skills published yet */}</span>
+            <span className="text-neutral-500 mt-1 block">{'// empty — no skills published yet'}</span>
           </>
         )}
       </div>
