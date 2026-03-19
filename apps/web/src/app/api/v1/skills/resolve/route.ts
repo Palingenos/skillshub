@@ -90,8 +90,8 @@ const MIN_FEEDBACK_FOR_BONUS = 5;
 function maxPossibleScore(tokens: string[], tokenWeights: Map<string, number>): number {
   let textScore = 0;
 
-  // Exact slug/name match boost: +20 (once)
-  textScore += 20;
+  // Exact slug/name match boost: +35 (once)
+  textScore += 35;
 
   // Every token matches name exactly: +20 * weight per token
   for (const token of tokens) {
@@ -139,10 +139,10 @@ function scoreSkill(skill: SkillRow, tokens: string[], tokenWeights: Map<string,
   let descHits = 0;
 
   // Exact slug/name match boost — highest-impact signal for resolve accuracy
-  // If any query token exactly matches the slug or name, +20 points
+  // If any query token exactly matches the slug or name, +35 points
   for (const token of tokens) {
     if (slugLower === token || nameLower === token) {
-      textScore += 20;
+      textScore += 35;
       break; // only apply once
     }
   }
@@ -217,6 +217,22 @@ function scoreSkill(skill: SkillRow, tokens: string[], tokenWeights: Map<string,
     if (conflicts && conflicts.some(c => nameLower.includes(c))) {
       textScore -= 15; // significant penalty for wrong domain
     }
+  }
+
+  // VENDOR PREFIX PENALTY: skills like "react-hook-form" shouldn't match "hook" queries
+  const VENDOR_PREFIXES = new Set([
+    "azure", "aws", "electric", "react", "spring", "google", "microsoft",
+  ]);
+  const slugParts = slugLower.split("-");
+  if (slugParts.length >= 2 && VENDOR_PREFIXES.has(slugParts[0]) && !tokens.includes(slugParts[0])) {
+    textScore -= 15;
+  }
+
+  // MCP FILTER: MCP skills should not appear for non-MCP queries
+  const isMcpSkill = slugLower.includes("mcp") || nameLower.includes("mcp") || tagsLower.includes("mcp");
+  const isMcpQuery = tokens.includes("mcp");
+  if (isMcpSkill && !isMcpQuery) {
+    textScore -= 30;
   }
 
   textScore = Math.max(0, Math.min(textScore, 70));
