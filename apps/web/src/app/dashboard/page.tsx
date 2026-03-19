@@ -3,9 +3,9 @@ import { getUser } from "@/lib/session";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db";
 import { skills, repos, donations, users } from "@skillshub/db/schema";
-import { eq, desc, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import Link from "next/link";
-import { Package, DollarSign, LogOut, Wallet, Heart, Plus, ArrowRight } from "lucide-react";
+import { Package, DollarSign, LogOut, Wallet, Plus, ArrowRight } from "lucide-react";
 
 export default async function DashboardPage() {
   const user = await getUser();

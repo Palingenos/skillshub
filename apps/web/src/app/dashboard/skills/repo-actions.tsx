@@ -10,7 +10,7 @@ interface RepoActionsProps {
   username: string;
 }
 
-export function RepoActions({ repoId, repoName, username }: RepoActionsProps) {
+export function RepoActions({ repoId, repoName }: RepoActionsProps) {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
   const [showRename, setShowRename] = useState(false);

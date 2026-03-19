@@ -38,12 +38,6 @@ export default function GoPage() {
     }
   }, [visibleLines, typedChars]);
 
-  // Show first line immediately
-  useEffect(() => {
-    setVisibleLines(0);
-    setTypedChars(0);
-  }, []);
-
   // Progress bar
   useEffect(() => {
     const start = Date.now();

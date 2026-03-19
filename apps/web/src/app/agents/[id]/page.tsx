@@ -3,6 +3,7 @@ import { users, skills, repos } from "@skillshub/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { SkillCard } from "@/components/skill-card";
+import Image from "next/image";
 import { Shield, Calendar, Star } from "lucide-react";
 
 interface Props {
@@ -62,9 +63,11 @@ export default async function AgentProfilePage({ params }: Props) {
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-8 flex items-start gap-6">
         {agent.avatarUrl ? (
-          <img
+          <Image
             src={agent.avatarUrl}
             alt={agent.username}
+            width={80}
+            height={80}
             className="h-20 w-20 rounded-full"
           />
         ) : (

@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { getDb } from "@/lib/db";
 import { skills, repos, users, stars } from "@skillshub/db/schema";
-import { eq, and, ne, desc, sql } from "drizzle-orm";
+import { eq, and, ne, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { LikeButton } from "@/components/star-button";
 import { DonateButton } from "@/components/donate-button";
@@ -12,7 +12,6 @@ import { getUser } from "@/lib/session";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { stripFrontmatter } from "@/lib/utils";
 import { getRepoStars } from "@/lib/ungh";
 import { JsonLd } from "@/components/json-ld";
 

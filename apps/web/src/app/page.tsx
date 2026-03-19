@@ -8,6 +8,7 @@ import { getMultiRepoStars } from "@/lib/ungh";
 import { AgentLogos } from "@/components/agent-logos";
 import { TerminalToggle } from "@/components/terminal-toggle";
 import { SkillCard } from "@/components/skill-card";
+import Image from "next/image";
 import { JsonLd } from "@/components/json-ld";
 
 const featureColorClasses: Record<string, string> = {
@@ -165,7 +166,7 @@ async function TopRepos() {
               className="group block rounded border border-neutral-800/50 bg-neutral-900/20 p-4 transition-all hover:border-neon-cyan/30 hover:bg-neutral-900/40 glow-box"
             >
               <div className="flex items-center gap-2.5 mb-2">
-                <img src={`https://github.com/${repo.owner}.png`} alt={repo.owner} className="h-6 w-6 rounded-full ring-1 ring-neutral-800" />
+                <Image src={`https://github.com/${repo.owner}.png`} alt={repo.owner} width={24} height={24} className="h-6 w-6 rounded-full ring-1 ring-neutral-800" />
                 <h3 className="font-mono text-sm font-medium text-neutral-200 group-hover:text-neon-cyan transition-colors truncate">
                   {repo.owner}<span className="text-neutral-600">/</span>{repo.repo}
                 </h3>
@@ -194,7 +195,7 @@ async function TopRepos() {
           >
             <div className="flex items-center gap-2.5 mb-2">
               {repo.ownerAvatar && (
-                <img src={repo.ownerAvatar} alt={repo.ownerUsername} className="h-6 w-6 rounded-full ring-1 ring-neutral-800" />
+                <Image src={repo.ownerAvatar} alt={repo.ownerUsername} width={24} height={24} className="h-6 w-6 rounded-full ring-1 ring-neutral-800" />
               )}
               <h3 className="font-mono text-sm font-medium text-neutral-200 group-hover:text-neon-cyan transition-colors truncate">
                 {repo.githubOwner ?? repo.ownerUsername}<span className="text-neutral-600">/</span>{repo.githubRepoName ?? repo.name}

@@ -81,14 +81,14 @@ export function DonateButton({
     setError("");
 
     try {
-      if (typeof window === "undefined" || !(window as any).ethereum) {
+      if (typeof window === "undefined" || !(window as unknown as Record<string, unknown>).ethereum) {
         throw new Error(
           "No Web3 wallet detected. Please install MetaMask or another BSC-compatible wallet."
         );
       }
 
       const { ethers } = await import("ethers");
-      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const provider = new ethers.BrowserProvider((window as unknown as Record<string, unknown>).ethereum);
 
       // Request account access
       await provider.send("eth_requestAccounts", []);
@@ -101,9 +101,9 @@ export function DonateButton({
           await provider.send("wallet_switchEthereumChain", [
             { chainId: "0x38" },
           ]);
-        } catch (switchErr: any) {
+        } catch (switchErr: unknown) {
           // If BSC isn't added, add it
-          if (switchErr.code === 4902) {
+          if ((switchErr as Record<string, unknown>).code === 4902) {
             await provider.send("wallet_addEthereumChain", [
               {
                 chainId: "0x38",
@@ -166,11 +166,14 @@ export function DonateButton({
       }
 
       setStep("success");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Donation failed:", err);
+      const e = err as Record<string, unknown>;
+      const info = e?.info as Record<string, unknown> | undefined;
+      const infoError = info?.error as Record<string, unknown> | undefined;
       setError(
-        err?.info?.error?.message ||
-          err?.message ||
+        (infoError?.message as string) ||
+          (err instanceof Error ? err.message : null) ||
           "Transaction failed. Please try again."
       );
       setStep("error");

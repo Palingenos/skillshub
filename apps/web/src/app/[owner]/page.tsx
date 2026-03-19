@@ -1,9 +1,10 @@
 export const dynamic = "force-dynamic";
 import { getDb } from "@/lib/db";
-import { skills, repos, users } from "@skillshub/db/schema";
+import { repos, users } from "@skillshub/db/schema";
 import { eq, sql, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getMultiRepoStars } from "@/lib/ungh";
 
 interface Props {
@@ -65,9 +66,11 @@ export default async function OwnerPage({ params }: Props) {
       {/* Owner header */}
       <div className="mb-8 flex items-center gap-4">
         {user?.avatarUrl && (
-          <img
+          <Image
             src={user.avatarUrl}
             alt={owner}
+            width={48}
+            height={48}
             className="h-12 w-12 rounded-full ring-1 ring-neutral-800"
           />
         )}

@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "**" },
+    ],
+  },
   transpilePackages: ["@skillshub/db", "@skillshub/shared"],
   serverExternalPackages: ["pg"],
   poweredByHeader: false,

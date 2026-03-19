@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist } from "next/font/google";
 import { Fira_Code } from "next/font/google";
 import { Nav } from "@/components/nav";
@@ -61,9 +62,9 @@ export default function RootLayout({
                   github
                 </a>
                 <span className="text-neutral-800">│</span>
-                <a href="/skills" className="hover:text-neon-cyan transition-colors">
+                <Link href="/skills" className="hover:text-neon-cyan transition-colors">
                   registry
-                </a>
+                </Link>
                 <span className="text-neutral-800">│</span>
                 <span className="text-neutral-700">
                   {"{"}BSC mainnet{"}"}

@@ -1,5 +1,5 @@
 import { getDb } from "@/lib/db";
-import { corsJson, writeCorsJson, methodNotAllowed, OPTIONS as corsOptions, writeOPTIONS, formatZodError } from "@/lib/api-cors";
+import { corsJson, writeCorsJson, methodNotAllowed, writeOPTIONS, formatZodError } from "@/lib/api-cors";
 import { authenticateApiKey, isAuthError } from "@/lib/api-key-auth";
 import { skills, repos, users } from "@skillshub/db/schema";
 import { updateSkillSchema } from "@skillshub/shared/validators";

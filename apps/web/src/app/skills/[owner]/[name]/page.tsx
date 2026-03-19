@@ -3,6 +3,7 @@ import { skills, repos, users } from "@skillshub/db/schema";
 import { eq, and } from "drizzle-orm";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Star, Download } from "lucide-react";
 import { stripFrontmatter } from "@/lib/utils";
 
@@ -70,9 +71,11 @@ export default async function OldSkillDetailPage({ params }: Props) {
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           {skill.owner.avatarUrl && (
-            <img
+            <Image
               src={skill.owner.avatarUrl}
               alt={skill.owner.username}
+              width={32}
+              height={32}
               className="h-8 w-8 rounded-full ring-1 ring-neutral-800"
             />
           )}

@@ -23,8 +23,8 @@ export function KeyItem({ item }: { item: ApiKeyItem }) {
     setLoading(true);
     try {
       await revokeApiKey(item.id);
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -36,8 +36,8 @@ export function KeyItem({ item }: { item: ApiKeyItem }) {
     try {
       await renameApiKey(item.id, editName);
       setEditing(false);
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }

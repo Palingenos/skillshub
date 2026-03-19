@@ -87,7 +87,7 @@ export async function POST(request: Request) {
     // Fix 3: Wrap entire import in a transaction
     const result = await db.transaction(async (tx) => {
       // Find or create repo
-      let [existingRepo] = await tx
+      const [existingRepo] = await tx
         .select({ id: repos.id })
         .from(repos)
         .where(

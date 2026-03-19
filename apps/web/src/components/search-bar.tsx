@@ -1,20 +1,22 @@
 "use client";
 
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 export function SearchBar() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const searchQ = useMemo(() => searchParams.get("q") ?? "", [searchParams]);
+  const [query, setQuery] = useState(searchQ);
+  const [prevSearchQ, setPrevSearchQ] = useState(searchQ);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Sync input when URL changes externally
-  useEffect(() => {
-    setQuery(searchParams.get("q") ?? "");
-  }, [searchParams]);
+  // Sync input when URL changes externally (React-recommended render-time pattern)
+  if (searchQ !== prevSearchQ) {
+    setPrevSearchQ(searchQ);
+    setQuery(searchQ);
+  }
 
   // Focus search on '/' keypress when not already in an input
   useEffect(() => {

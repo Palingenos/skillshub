@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Suspense } from "react";
 import { SearchBar } from "./search-bar";
 import { getUser } from "@/lib/session";
@@ -34,9 +35,11 @@ async function UserNav() {
       </Link>
       {user.avatarUrl ? (
         <Link href="/dashboard">
-          <img
+          <Image
             src={user.avatarUrl}
             alt={user.username}
+            width={28}
+            height={28}
             className="h-7 w-7 rounded-full ring-1 ring-neutral-700 hover:ring-neon-cyan/50 transition-all"
           />
         </Link>

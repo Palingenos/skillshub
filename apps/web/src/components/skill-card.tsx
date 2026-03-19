@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface SkillCardProps {
   id: string;
@@ -20,7 +21,6 @@ interface SkillCardProps {
 }
 
 export function SkillCard({
-  id,
   slug,
   name,
   description,
@@ -39,9 +39,11 @@ export function SkillCard({
     >
       <div className="mb-2 flex items-center gap-2 min-w-0">
         {owner.avatarUrl && (
-          <img
+          <Image
             src={owner.avatarUrl}
             alt={owner.username}
+            width={20}
+            height={20}
             className="h-5 w-5 rounded-full shrink-0 ring-1 ring-neutral-800"
           />
         )}

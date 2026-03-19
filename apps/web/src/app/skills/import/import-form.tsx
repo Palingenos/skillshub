@@ -52,7 +52,7 @@ export function ImportForm() {
 
   const [importing, setImporting] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
-  const [importResult, setImportResult] = useState<any>(null);
+  const [importResult, setImportResult] = useState<Record<string, unknown> | null>(null);
 
   // Load user repos on mount
   useEffect(() => {
@@ -116,10 +116,10 @@ export function ImportForm() {
 
       setRepoInfo(data.data.repo);
       setSkills(
-        data.data.skills.map((s: any) => ({ ...s, selected: true }))
+        data.data.skills.map((s: DiscoveredSkill) => ({ ...s, selected: true }))
       );
-    } catch (err: any) {
-      setScanError(err.message || "Network error");
+    } catch (err: unknown) {
+      setScanError(err instanceof Error ? err.message : "Network error");
       setStep("select");
     } finally {
       setScanning(false);
@@ -177,8 +177,8 @@ export function ImportForm() {
 
       setImportResult(data.data);
       setStep("done");
-    } catch (err: any) {
-      setImportError(err.message || "Network error");
+    } catch (err: unknown) {
+      setImportError(err instanceof Error ? err.message : "Network error");
       setStep("scan");
     } finally {
       setImporting(false);
@@ -198,7 +198,7 @@ export function ImportForm() {
       {(step === "select" || step === "scan") && (
         <div className="rounded-lg border border-neutral-800 bg-neutral-950/50 p-6">
           <div className="mb-4 font-mono text-xs text-neutral-600">
-            <span className="text-neon-cyan">step_1</span> // select repository
+            <span className="text-neon-cyan">step_1</span> {/* select repository */}
           </div>
 
           {/* URL Input */}
@@ -311,8 +311,7 @@ export function ImportForm() {
       {step === "scan" && !scanning && skills.length > 0 && repoInfo && (
         <div className="rounded-lg border border-neutral-800 bg-neutral-950/50 p-6">
           <div className="mb-4 font-mono text-xs text-neutral-600">
-            <span className="text-neon-cyan">step_2</span> // select skills to
-            import
+            <span className="text-neon-cyan">step_2</span> {/* select skills to import */}
           </div>
 
           {/* Repo Info */}
@@ -443,7 +442,7 @@ export function ImportForm() {
       {step === "done" && importResult && (
         <div className="rounded-lg border border-green-800/30 bg-green-900/10 p-6">
           <div className="mb-4 font-mono text-xs text-neutral-600">
-            <span className="text-green-400">done</span> // import complete
+            <span className="text-green-400">done</span> {/* import complete */}
           </div>
 
           <div className="mb-4 space-y-1 font-mono text-sm">

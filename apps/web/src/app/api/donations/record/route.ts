@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { toUserId, repoId, authorTxHash, platformTxHash, amount, token } =
-    body;
+  const { toUserId, repoId, authorTxHash, amount, token } = body;
 
   if (!toUserId || !repoId || !authorTxHash || !amount || !token) {
     return NextResponse.json(

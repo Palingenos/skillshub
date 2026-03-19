@@ -69,11 +69,11 @@ async function SkillsList({ searchParams }: Props) {
     `);
 
     // Sort the diverse results by star count, then paginate
-    const sorted = (diverseResults.rows as any[]).sort((a, b) => b.repoStarCount - a.repoStarCount);
+    const sorted = (diverseResults.rows as Record<string, unknown>[]).sort((a, b) => (b.repoStarCount as number) - (a.repoStarCount as number));
     total = sorted.length;
     const pageRows = sorted.slice(offset, offset + limit);
 
-    data = pageRows.map((r: any) => ({
+    data = pageRows.map((r: Record<string, unknown>) => ({
       id: r.id,
       slug: r.slug,
       name: r.name,
@@ -138,12 +138,12 @@ async function SkillsList({ searchParams }: Props) {
         {params.q ? (
           <>
             <span className="text-neon-cyan/40">$</span> search &quot;{params.q}&quot;<br />
-            <span className="text-neutral-500 mt-1 block">// 0 results — try different keywords</span>
+            <span className="text-neutral-500 mt-1 block">{/* 0 results — try different keywords */}</span>
           </>
         ) : (
           <>
             <span className="text-neon-cyan/40">$</span> ls registry/<br />
-            <span className="text-neutral-500 mt-1 block">// empty — no skills published yet</span>
+            <span className="text-neutral-500 mt-1 block">{/* empty — no skills published yet */}</span>
           </>
         )}
       </div>

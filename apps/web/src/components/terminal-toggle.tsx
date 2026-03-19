@@ -107,6 +107,7 @@ function AgentTerminal() {
       </div>
       <div className="mt-1 text-neutral-500">
         <span className="text-neon-cyan">$</span> curl &quot;
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a
           href="/api/v1"
           className="text-neon-cyan/80 hover:text-neon-cyan underline underline-offset-2 decoration-neon-cyan/30 hover:decoration-neon-cyan transition-all"

@@ -18,7 +18,6 @@ interface SkillRowProps {
 export function SkillRow({
   skillId,
   name,
-  slug,
   description,
   isPublished,
   editHref,

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUser } from "@/lib/session";
 import { getDb } from "@/lib/db";
 import { repos, skills } from "@skillshub/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 // PATCH /api/repos/:id — rename repo
 export async function PATCH(

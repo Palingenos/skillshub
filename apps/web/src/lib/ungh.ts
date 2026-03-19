@@ -1,10 +1,3 @@
-interface UnghRepo {
-  stars: number;
-  forks: number;
-  description: string;
-  defaultBranch: string;
-}
-
 const CACHE_REVALIDATE = 3600; // 1 hour
 
 export async function getRepoStars(owner: string, repo: string): Promise<number> {
