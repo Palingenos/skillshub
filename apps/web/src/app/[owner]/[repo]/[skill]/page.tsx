@@ -13,6 +13,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { stripFrontmatter } from "@/lib/utils";
 import { getRepoStars } from "@/lib/ungh";
+import { JsonLd } from "@/components/json-ld";
 
 interface Props {
   params: Promise<{ owner: string; repo: string; skill: string }>;
@@ -154,6 +155,22 @@ export default async function SkillDetailPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 animate-fade-in">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareSourceCode",
+          name: result.name,
+          description: result.description ?? `${result.name} skill on SkillsHub`,
+          author: {
+            "@type": "Person",
+            name: result.owner.username,
+            url: `https://skillshub.wtf/${owner}`,
+          },
+          dateCreated: result.createdAt.toISOString(),
+          url: `https://skillshub.wtf/${owner}/${repo}/${result.slug}`,
+          codeRepository: result.repo.githubRepoUrl ?? `https://github.com/${owner}/${repo}`,
+        }}
+      />
       {/* Breadcrumbs as file path */}
       <nav className="mb-6 font-mono text-xs text-neutral-600">
         <Link href="/" className="hover:text-neon-cyan transition-colors">

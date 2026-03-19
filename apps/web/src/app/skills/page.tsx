@@ -3,6 +3,7 @@ import { skills, repos, users } from "@skillshub/db/schema";
 import { eq, desc, and, sql, arrayContains } from "drizzle-orm";
 import { SkillCard } from "@/components/skill-card";
 import { Suspense } from "react";
+import { JsonLd } from "@/components/json-ld";
 
 interface Props {
   searchParams: Promise<{ q?: string; tags?: string; sort?: string; page?: string }>;
@@ -180,6 +181,21 @@ async function SkillsList({ searchParams }: Props) {
 export default function SkillsPage(props: Props) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Browse Skills — SkillsHub",
+          url: "https://skillshub.wtf/skills",
+          description:
+            "Browse and search the SkillsHub registry of agent skills — web scraping, code review, data pipelines, and more.",
+          isPartOf: {
+            "@type": "WebSite",
+            name: "SkillsHub",
+            url: "https://skillshub.wtf",
+          },
+        }}
+      />
       <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="font-mono text-lg text-neutral-300">
           <span className="text-neon-cyan/50">&gt;</span> browse<span className="text-neutral-600">/</span>registry

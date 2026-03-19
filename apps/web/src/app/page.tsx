@@ -7,6 +7,7 @@ import { getMultiRepoStars } from "@/lib/ungh";
 import { AgentLogos } from "@/components/agent-logos";
 import { TerminalToggle } from "@/components/terminal-toggle";
 import { SkillCard } from "@/components/skill-card";
+import { JsonLd } from "@/components/json-ld";
 
 const featureColorClasses: Record<string, string> = {
   "neon-cyan": "text-neon-cyan",
@@ -218,6 +219,36 @@ export default async function HomePage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "SkillsHub",
+          url: "https://skillshub.wtf",
+          description:
+            "The Right Skill, One API Call. Describe your task and get the best-fit agent skill instantly.",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate:
+                "https://skillshub.wtf/skills?q={search_term_string}",
+            },
+            "query-input": "required name=search_term_string",
+          },
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "SkillsHub",
+          url: "https://skillshub.wtf",
+          logo: "https://skillshub.wtf/favicon.ico",
+          description:
+            "Agent skill registry — discover, trust, and fetch skills for AI agents.",
+        }}
+      />
       {/* ── Hero (centered) ──────────────────── */}
       <section className="py-10 md:py-16">
         <div className="mx-auto max-w-3xl text-center">
