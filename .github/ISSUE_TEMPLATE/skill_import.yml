@@ -1,0 +1,71 @@
+name: 📦 Skill Import Request
+description: Request a new repository to be indexed in SkillsHub
+title: "[Import]: "
+labels: ["skill-import"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Want a repo's skills indexed in SkillsHub? Fill out the details below and we'll take a look!
+
+  - type: input
+    id: repo-url
+    attributes:
+      label: Repository URL
+      description: The full GitHub URL of the repository containing skills.
+      placeholder: "https://github.com/owner/repo"
+    validations:
+      required: true
+
+  - type: input
+    id: skill-count
+    attributes:
+      label: Approximate Number of Skills
+      description: How many SKILL.md files (or equivalent) does the repo contain?
+      placeholder: "e.g., 15"
+    validations:
+      required: true
+
+  - type: textarea
+    id: why-index
+    attributes:
+      label: Why Should This Be Indexed?
+      description: Explain why this repo's skills would be valuable to the SkillsHub community.
+      placeholder: |
+        This repo contains high-quality skills for...
+        It's maintained by...
+        It has X stars and is actively used by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: skill-examples
+    attributes:
+      label: Example Skills
+      description: List a few notable skills from the repo (optional but helpful).
+      placeholder: |
+        - `docker-compose` — Sets up multi-container Docker environments
+        - `terraform-plan` — Generates and reviews Terraform plans
+    validations:
+      required: false
+
+  - type: dropdown
+    id: skill-format
+    attributes:
+      label: Skill Format
+      description: What format are the skills in?
+      options:
+        - SKILL.md files
+        - AGENTS.md / AgentSkills
+        - Custom format (describe in additional context)
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other relevant information (special import considerations, subdirectory paths, etc.)
+    validations:
+      required: false

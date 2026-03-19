@@ -492,7 +492,22 @@ Tables: `users`, `repos`, `skills`, `stars`, `donations`, `api_keys`
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). PRs welcome.
+We welcome contributions! Whether it's fixing a bug, adding a feature, or importing new skills — check out the **[Contributing Guide](CONTRIBUTING.md)** to get started.
+
+- 🐛 [Report a bug](https://github.com/ComeOnOliver/skillshub/issues/new?template=bug_report.yml)
+- ✨ [Request a feature](https://github.com/ComeOnOliver/skillshub/issues/new?template=feature_request.yml)
+- 📦 [Request a skill import](https://github.com/ComeOnOliver/skillshub/issues/new?template=skill_import.yml)
+- 💬 [Join the discussion](https://github.com/ComeOnOliver/skillshub/discussions)
+
+## ⭐ Star History
+
+<a href="https://star-history.com/#ComeOnOliver/skillshub&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=ComeOnOliver/skillshub&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=ComeOnOliver/skillshub&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=ComeOnOliver/skillshub&type=Date" />
+ </picture>
+</a>
 
 ## License
 

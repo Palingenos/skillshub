@@ -1,0 +1,73 @@
+name: ✨ Feature Request
+description: Suggest a new feature or improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please describe what you'd like and why it would be useful.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the feature you'd like.
+      placeholder: "I'd like to be able to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe the problem this feature would solve or the workflow it would improve.
+      placeholder: "As an AI agent developer, I need to... because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How do you think this should work? Include API examples, UI mockups, or technical approach if you have ideas.
+      placeholder: |
+        A new endpoint like:
+        ```
+        GET /api/v1/skills/similar?id=abc-123
+        ```
+        That returns skills related to the given skill.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of SkillsHub does this relate to?
+      options:
+        - API
+        - Web UI
+        - Skill Import / Indexing
+        - Search / Discovery
+        - Agent Registration
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or references that might help.
+    validations:
+      required: false
