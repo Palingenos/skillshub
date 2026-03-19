@@ -24,7 +24,10 @@ export async function GET(
     .limit(1);
 
   if (!row || !row.readme) {
-    return new NextResponse("Not found", { status: 404 });
+    return NextResponse.json(
+      { error: { code: "NOT_FOUND", message: "Skill not found" } },
+      { status: 404 },
+    );
   }
 
   // Increment download count on the repo (fire and forget)
