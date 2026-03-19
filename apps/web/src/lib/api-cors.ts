@@ -65,7 +65,29 @@ export function OPTIONS() {
   return new Response(null, { status: 204, headers: readCorsHeaders });
 }
 
-/** OPTIONS preflight for write endpoints — restricted origins */
+/** OPTIONS preflight for write endpoints — permissive so browsers can proceed;
+ *  actual origin restriction is enforced on the write response itself. */
 export function writeOPTIONS(request: Request) {
-  return new Response(null, { status: 204, headers: getWriteCorsHeaders(request) });
+  const origin = request?.headers.get("Origin") ?? "";
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": origin,
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Vary": "Origin",
+      },
+    });
+  }
+  // For non-whitelisted origins (API consumers), return open CORS on preflight
+  // The actual write endpoints still enforce origin restrictions on responses
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
 }
