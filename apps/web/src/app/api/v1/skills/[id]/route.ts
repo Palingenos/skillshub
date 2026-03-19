@@ -174,5 +174,6 @@ export async function DELETE(
 }
 
 export async function POST() { return methodNotAllowed(["GET", "PUT", "DELETE"]); }
+export async function PATCH() { return methodNotAllowed(["GET", "PUT", "DELETE"]); }
 
 export function OPTIONS(request: Request) { return writeOPTIONS(request); }

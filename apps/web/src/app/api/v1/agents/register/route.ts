@@ -80,5 +80,6 @@ export async function POST(request: Request) {
 export async function GET() { return methodNotAllowed(["POST"]); }
 export async function PUT() { return methodNotAllowed(["POST"]); }
 export async function DELETE() { return methodNotAllowed(["POST"]); }
+export async function PATCH() { return methodNotAllowed(["POST"]); }
 
 export function OPTIONS(request: Request) { return writeOPTIONS(request); }

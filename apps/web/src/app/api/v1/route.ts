@@ -3,6 +3,7 @@ import { corsJson, methodNotAllowed, OPTIONS as corsOptions } from "@/lib/api-co
 export async function POST() { return methodNotAllowed(["GET"]); }
 export async function PUT() { return methodNotAllowed(["GET"]); }
 export async function DELETE() { return methodNotAllowed(["GET"]); }
+export async function PATCH() { return methodNotAllowed(["GET"]); }
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://skillshub.wtf";
 
