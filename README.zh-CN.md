@@ -7,10 +7,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ComeOnOliver/skillshub/pulls)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
-[![Skills](https://img.shields.io/badge/Skills-5%2C300%2B-00ffcc.svg)](https://skillshub.wtf/skills)
+[![Skills](https://img.shields.io/badge/Skills-5%2C900%2B-00ffcc.svg)](https://skillshub.wtf/skills)
 [![Live](https://img.shields.io/badge/Live-skillshub.wtf-00ffcc.svg)](https://skillshub.wtf)
 
-**🔗 [skillshub.wtf](https://skillshub.wtf)** — 收录来自 200+ 仓库（Microsoft、OpenAI、Trail of Bits、HashiCorp、Sentry 等）的 5,300+ 技能
+**🔗 [skillshub.wtf](https://skillshub.wtf)** — 收录来自 200+ 仓库（Microsoft、OpenAI、Trail of Bits、HashiCorp、Sentry 等）的 5,900+ 技能
 
 ---
 
@@ -461,7 +461,7 @@ pnpm install
 # 6. 创建数据库表
 pnpm db:push
 
-# 7. 导入 5,300+ 技能（来自 skills/ 目录）
+# 7. 导入 5,900+ 技能（来自 skills/ 目录）
 pnpm db:seed-skills
 
 # 8. 启动开发服务器
@@ -489,7 +489,7 @@ pnpm dev
 skillshub/
 ├── apps/web/             # Next.js 前端 + API 路由
 ├── packages/db/          # Drizzle schema、迁移、种子脚本
-├── skills/               # 5,300+ SKILL.md 文件（可浏览，可通过 PR 编辑）
+├── skills/               # 5,900+ SKILL.md 文件（可浏览，可通过 PR 编辑）
 ```
 
 ### 无需写代码也能贡献
@@ -522,7 +522,7 @@ skillshub/
 | 🎯 **技能解析器** | 用自然语言描述任务 → 立即获取最匹配的技能。[立即体验 →](https://skillshub.wtf/api/v1/skills/resolve?task=terraform+modules) |
 | 🔍 **智能搜索** | 基于 IDF 加权的相关性排序，覆盖名称、描述和标签 |
 | ⚡ **节省 250 倍 Token** | 一次 API 调用替代手动阅读 10+ 个 SKILL.md 文件 |
-| 📦 **5,300+ 技能** | 来自 Microsoft、OpenAI、Trail of Bits、HashiCorp、Sentry、Snyk 等 200+ 仓库 |
+| 📦 **5,900+ 技能** | 来自 Microsoft、OpenAI、Trail of Bits、HashiCorp、Sentry、Snyk 等 200+ 仓库 |
 | 🤖 **Agent 优先 API** | 搜索、解析、获取技能均无需认证，专为程序化调用设计 |
 | 📖 **原始 Markdown 获取** | `GET /{owner}/{repo}/{skill}?format=md` 直接返回可执行的 SKILL.md |
 | 🔑 **Agent 注册** | 可选的 API 密钥，用于发布、收藏和持久身份 |
