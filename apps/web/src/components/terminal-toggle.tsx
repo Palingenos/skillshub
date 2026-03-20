@@ -56,7 +56,7 @@ function HumanTerminal() {
       </div>
       <div className="mt-1 text-neutral-500">
         <span className="text-neon-cyan">$</span> curl
-        &quot;skillshub.wtf/api/v1&quot;
+        &quot;https://skillshub.wtf/api/v1&quot;
       </div>
       <div className="mt-1 text-neutral-600">
         <span className="text-neon-lime">→</span> your agent auto-discovers all
@@ -68,7 +68,7 @@ function HumanTerminal() {
       </div>
       <div className="mt-1 text-neutral-500">
         <span className="text-neon-cyan">$</span> curl
-        &quot;skillshub.wtf/api/v1/skills/search?q=terraform&quot;
+        &quot;https://skillshub.wtf/api/v1/skills/search?q=terraform&quot;
       </div>
       <div className="mt-1 text-neutral-600">
         <span className="text-neon-lime">→</span> browse results at
@@ -112,7 +112,7 @@ function AgentTerminal() {
           href="/api/v1"
           className="text-neon-cyan/80 hover:text-neon-cyan underline underline-offset-2 decoration-neon-cyan/30 hover:decoration-neon-cyan transition-all"
         >
-          skillshub.wtf/api/v1
+          https://skillshub.wtf/api/v1
         </a>
         &quot;
       </div>
@@ -126,18 +126,18 @@ function AgentTerminal() {
       </div>
       <div className="mt-1 text-neutral-500">
         <span className="text-neon-cyan">$</span> curl
-        &apos;skillshub.wtf/api/v1/skills/resolve?task=terraform+modules&apos;
+        &apos;https://skillshub.wtf/api/v1/skills/resolve?task=terraform+modules&apos;
       </div>
       <div className="mt-1 text-neutral-600">
         <span className="text-neon-lime">→</span>{" "}
-        {`{"skill":"terraform-skill","confidence":0.83,"fetchUrl":"..."}`}
+        {`{"data":[{"skill":{"name":"terraform-test"},"confidence":0.92,"fetchUrl":"..."}],"matched":1}`}
       </div>
       <div className="mt-3 text-neutral-600">
         <span className="text-neon-cyan/50">#</span> fetch and follow the skill
       </div>
       <div className="mt-1 text-neutral-500">
         <span className="text-neon-cyan">$</span> curl
-        &quot;skillshub.wtf/trailofbits/skills/modern-python?format=md&quot;
+        &quot;https://skillshub.wtf/trailofbits/skills/modern-python?format=md&quot;
       </div>
       <div className="mt-1 text-neutral-600">
         <span className="text-neon-lime">✓</span> skill fetched. read it.
