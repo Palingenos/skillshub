@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { getDb } from "@/lib/db";
-import { repos, users } from "@skillshub/db/schema";
-import { eq, sql, desc } from "drizzle-orm";
+import { repos, users, skills } from "@skillshub/db/schema";
+import { eq, and, sql, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -28,7 +28,7 @@ export default async function OwnerPage({ params }: Props) {
     .where(eq(users.username, owner))
     .limit(1);
 
-  // Get repos with skill counts
+  // Get repos with skill counts (LEFT JOIN to properly count published skills)
   const repoList = await db
     .select({
       id: repos.id,
@@ -37,10 +37,12 @@ export default async function OwnerPage({ params }: Props) {
       githubRepoUrl: repos.githubRepoUrl,
       starCount: repos.starCount,
       downloadCount: repos.downloadCount,
-      skillCount: sql<number>`(SELECT count(*)::int FROM skills WHERE skills.repo_id = ${repos.id})`,
+      skillCount: sql<number>`count(${skills.id})::int`,
     })
     .from(repos)
+    .leftJoin(skills, and(eq(skills.repoId, repos.id), eq(skills.isPublished, true)))
     .where(eq(repos.githubOwner, owner))
+    .groupBy(repos.id)
     .orderBy(desc(repos.starCount));
 
   if (repoList.length === 0) notFound();

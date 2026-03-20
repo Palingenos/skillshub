@@ -14,7 +14,7 @@ export default async function MySkillsPage() {
 
   const db = getDb();
 
-  // Get repos with skill counts
+  // Get repos with skill counts (LEFT JOIN to properly count skills)
   const myRepos = await db
     .select({
       id: repos.id,
@@ -26,11 +26,13 @@ export default async function MySkillsPage() {
       githubRepoUrl: repos.githubRepoUrl,
       starCount: repos.starCount,
       downloadCount: repos.downloadCount,
-      skillCount: sql<number>`(SELECT count(*) FROM skills WHERE skills.repo_id = repos.id)::int`,
+      skillCount: sql<number>`count(${skills.id})::int`,
       createdAt: repos.createdAt,
     })
     .from(repos)
+    .leftJoin(skills, eq(skills.repoId, repos.id))
     .where(eq(repos.ownerId, user.userId))
+    .groupBy(repos.id)
     .orderBy(desc(repos.createdAt));
 
   // Get skills grouped by repo

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Zap, Shield, Star, Download, Package, Github } from "lucide-react";
 import { getDb } from "@/lib/db";
 import { skills, repos, users } from "@skillshub/db/schema";
-import { eq, desc, sql } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { getMultiRepoStars } from "@/lib/ungh";
 import { AgentLogos } from "@/components/agent-logos";
 import { TerminalToggle } from "@/components/terminal-toggle";
@@ -139,13 +139,15 @@ async function TopRepos() {
       githubRepoName: repos.githubRepoName,
       starCount: repos.starCount,
       downloadCount: repos.downloadCount,
-      skillCount: sql<number>`(SELECT count(*) FROM skills WHERE skills.repo_id = repos.id)::int`,
+      skillCount: sql<number>`count(${skills.id})::int`,
       ownerAvatar: users.avatarUrl,
       ownerUsername: users.username,
       ownerVerified: users.isVerified,
     })
     .from(repos)
     .innerJoin(users, eq(repos.ownerId, users.id))
+    .leftJoin(skills, and(eq(skills.repoId, repos.id), eq(skills.isPublished, true)))
+    .groupBy(repos.id, users.avatarUrl, users.username, users.isVerified)
     .orderBy(desc(repos.starCount))
     .limit(6);
 
