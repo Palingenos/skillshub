@@ -75,7 +75,7 @@ export default async function RepoPage({ params }: Props) {
     .orderBy(skills.name);
 
   const firstSkillSlug = data.length > 0 ? data[0].slug : "skill-name";
-  const installCommand = `npx skills add ${owner}/${repo} --skill ${firstSkillSlug}`;
+  const installCommand = `curl "https://skillshub.wtf/${owner}/${repo}/${firstSkillSlug}?format=md"`;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 animate-fade-in">
