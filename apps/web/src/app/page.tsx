@@ -54,6 +54,7 @@ const FEATURED_REPOS = [
   { owner: "affaan-m", repo: "everything-claude-code", description: "Comprehensive Claude Code skills collection.", skills: 40 },
   { owner: "vercel-labs", repo: "agent-skills", description: "Agent skills by Vercel — React, deployment, web design.", skills: 5 },
   { owner: "kepano", repo: "obsidian-skills", description: "Obsidian-focused skills by Steph Ango.", skills: 5 },
+  { owner: "tanweai", repo: "pua", description: "PUA/PIP skill — forces AI to exhaust every solution before giving up. 10k+ stars.", skills: 9 },
 ];
 
 function formatCount(n: number): string {
